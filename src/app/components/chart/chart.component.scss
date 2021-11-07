@@ -1,0 +1,15 @@
+::ng-deep {
+  .mat-form-field-underline {
+    display: none;
+  }
+
+  .mat-form-field-appearance-fill .mat-form-field-flex {
+    border-radius: 30px;
+    padding: 0.75em 0.75em 0 0.75em;
+    border: 1px solid #ced4da;
+  }
+
+  .mat-form-field-wrapper {
+    padding-bottom: .3em;
+  }
+}
