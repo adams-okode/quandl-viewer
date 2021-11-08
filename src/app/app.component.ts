@@ -47,6 +47,7 @@ export class AppComponent implements OnInit {
     this.selectedTicker.next(option.dataset_code);
   }
 
+
   private _filter(value: string): string[] {
     if (value == null || value == undefined) return this.options;
     const filterValue = value.toLowerCase();
