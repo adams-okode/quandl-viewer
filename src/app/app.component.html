@@ -1,54 +1,58 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <form class="d-flex" [formGroup]="searchForm">
-      <mat-form-field class="custom-import" appearance="fill">
-        <mat-label>Company</mat-label>
-        <input
-          type="text"
-          placeholder="Search Company ..."
-          aria-label="Search Company .."
-          matInput
-          formControlName="company"
-          [matAutocomplete]="auto"
-        />
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option
-            *ngFor="let option of filteredOptions | async"
-            [value]="option.dataset_code"
-            (onSelectionChange)="viewData($event, option)"
-            (click)="viewData($event, option)"
-          >
-            {{ option.name }}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-    </form>
-
-    <div *ngIf="showSpinner" class="text-center mx-4">
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Loading...</span>
+<div class="single-view-port">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <form class="d-flex" [formGroup]="searchForm">
+        <mat-form-field class="custom-import" appearance="fill">
+          <mat-label> -- Select Company -- </mat-label>
+          <input
+            type="text"
+            placeholder="Search Company ..."
+            aria-label="Search Company ..."
+            matInput
+            formControlName="company"
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option
+              *ngFor="let option of filteredOptions | async"
+              [value]="option.dataset_code"
+              (onSelectionChange)="viewData($event, option)"
+              (click)="viewData($event, option)"
+            >
+              {{ option.name }}
+            </mat-option>
+          </mat-autocomplete>
+  
+         
+        </mat-form-field>
+      </form>
+  
+      <div *ngIf="showSpinner" class="text-center mx-4">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+        <a class="navbar-brand" href="#"> Quandl Data </a>
       </div>
     </div>
-    
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
-      <a class="navbar-brand" href="#"> Quandl Data </a>
-    </div>
-  </div>
-</nav>
-
-<br/>
-<app-chart [ticker]="selectedTicker" (loadedValues)="finishedLoading($event)" ></app-chart>
+  </nav>
+  
+  <br/>
+  <app-chart [ticker]="selectedTicker" (loadedValues)="finishedLoading($event)" ></app-chart>
+</div>
 
 <!-- <router-outlet></router-outlet> -->
