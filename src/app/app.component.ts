@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import * as _ from 'lodash';
 
@@ -25,34 +25,41 @@ export class AppComponent implements OnInit {
   constructor(private httpClient: HttpClient) {}
 
   ngOnInit() {
-    this.httpClient.get('assets/companies.json', {}).subscribe((data: any) => {
-      this.options = data;
-    });
-
-    this.filteredOptions = this.searchForm.get('company')?.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value))
-    );
+    this.showSpinner = true;
+    this.httpClient
+      .get('assets/companies.json', {})
+      .toPromise()
+      .then((data) => {
+        this.options = data;
+        this.filteredOptions = this.searchForm
+          .get('company')
+          ?.valueChanges.pipe(
+            startWith(''),
+            map((value) => this._filter(value))
+          );
+        this.finishedLoading();
+      });
   }
 
-  viewData(event: any, option?:any) {
+  viewData(event: any, option?: any) {
     this.showSpinner = true;
     this.searchForm.get('company')?.setValue(option.dataset_code);
     this.selectedTicker.next(option.dataset_code);
   }
 
   private _filter(value: string): string[] {
+    if (value == null || value == undefined) return this.options;
     const filterValue = value.toLowerCase();
     return _.filter(this.options, (option: any) => {
       return (
         option.name.toLowerCase().includes(filterValue) ||
         option.dataset_code.toLowerCase() === filterValue
       );
-    }).slice(0, 20);
+    });
   }
 
-  finishedLoading(event:any){
-    if(this.showSpinner){
+  finishedLoading(event?: any) {
+    if (this.showSpinner) {
       this.showSpinner = false;
     }
   }
