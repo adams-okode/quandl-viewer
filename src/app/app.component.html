@@ -11,16 +11,25 @@
           formControlName="company"
           [matAutocomplete]="auto"
         />
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-autocomplete #auto="matAutocomplete">
           <mat-option
             *ngFor="let option of filteredOptions | async"
-            [value]="option.dataset.dataset_code"
+            [value]="option.dataset_code"
+            (onSelectionChange)="viewData($event, option)"
+            (click)="viewData($event, option)"
           >
-            {{ option.dataset.name }}
+            {{ option.name }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
     </form>
+
+    <div *ngIf="showSpinner" class="text-center mx-4">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    
     <button
       class="navbar-toggler"
       type="button"
@@ -40,6 +49,6 @@
 </nav>
 
 <br/>
-<app-chart [ticker]="selectedTicker" ></app-chart>
+<app-chart [ticker]="selectedTicker" (loadedValues)="finishedLoading($event)" ></app-chart>
 
 <!-- <router-outlet></router-outlet> -->

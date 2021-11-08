@@ -11,11 +11,10 @@ import { AppComponent } from './app.component';
 import { ChartComponent } from './components/chart/chart.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import * as PlotlyJS from 'plotly.js-dist-min';
 import { PlotlyModule } from 'angular-plotly.js';
-
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -31,7 +30,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ReactiveFormsModule,
     MatInputModule,
     HttpClientModule,
-    PlotlyModule
+    PlotlyModule,
+    MatProgressSpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
