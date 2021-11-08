@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node server.js",
-    "build": "ng build --prod",
+    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -24,6 +24,7 @@
     "angular-plotly.js": "^4.0.4",
     "bootstrap": "^5.1.3",
     "express": "^4.17.1",
+    "lodash": "^4.17.21",
     "plotly.js-dist-min": "^2.6.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
@@ -34,6 +35,7 @@
     "@angular/cli": "~12.2.4",
     "@angular/compiler-cli": "~12.2.0",
     "@types/jasmine": "~3.8.0",
+    "@types/lodash": "^4.14.176",
     "@types/node": "^12.11.1",
     "@types/plotly.js-dist-min": "^2.3.0",
     "jasmine-core": "~3.8.0",

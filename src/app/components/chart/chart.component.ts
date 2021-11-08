@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import {
   CandleStickData,
@@ -13,7 +13,9 @@ import { QuandlDatasetResponse } from 'src/app/lib/interfaces/dataset.interface'
   styleUrls: ['./chart.component.scss'],
 })
 export class ChartComponent implements OnInit {
-  @Input() ticker: Subject<string> = new BehaviorSubject<string>('A');
+  @Input() ticker: Subject<string> = new Subject<string>();
+
+  @Output() loadedValues: EventEmitter<any> = new EventEmitter();
 
   public layout = {
     dragmode: 'zoom',
@@ -27,15 +29,12 @@ export class ChartComponent implements OnInit {
     xaxis: {
       autorange: true,
       domain: [0, 1],
-      // range: ['2017-01-03 12:00', '2017-02-15 12:00'],
-      // rangeslider: { range: ['2017-01-03 12:00', '2017-02-15 12:00'] },
       title: 'Date',
       type: 'date',
     },
     yaxis: {
       autorange: true,
       domain: [0, 1],
-      // range: [114.609999778, 137.410004222],
       type: 'linear',
     },
   };
@@ -56,29 +55,36 @@ export class ChartComponent implements OnInit {
 
   public graph: CandleStickGraph = {
     data: [],
-    layout: { autsize: true, title: 'A Fancy Plot' },
+    layout: { autsize: true, title: '-- Choose company to view data --' },
   };
 
   constructor(private httpClient: HttpClient) {}
 
   ngOnInit(): void {
     this.ticker.subscribe((val: string) => {
-      const url = `https://data.nasdaq.com/api/v3/datasets/WIKI/${val}.json?start_date=2012-01-01&end_date=2018-12-31&api_key=Dsh3qzwuRKxcaFsAw4TJ`;
-      this.httpClient.get(url).subscribe((data) => {
-        const quandlDatasetResponse = data as QuandlDatasetResponse;
-        const quandlDataset = quandlDatasetResponse.dataset;
+      if (val != null || val != undefined) {
+        const url = `https://data.nasdaq.com/api/v3/datasets/WIKI/${val}.json?start_date=2012-01-01&end_date=2018-01-31&api_key=Dsh3qzwuRKxcaFsAw4TJ`;
+        this.httpClient.get(url).subscribe((data) => {
+          const quandlDatasetResponse = data as QuandlDatasetResponse;
+          const quandlDataset = quandlDatasetResponse.dataset;
 
-        this.graph.layout.title = quandlDataset.name;
-        
-        for (const datum of quandlDataset.data) {
-          this.candleStickData.x.push(datum[0]);
-          this.candleStickData.close.push(datum[4]);
-          this.candleStickData.open.push(datum[1]);
-          this.candleStickData.high.push(datum[2]);
-          this.candleStickData.low.push(datum[3]);
-        }
-        this.graph.data = [this.candleStickData];
-      });
+          this.graph.layout.title = quandlDataset.name;
+
+          for (const datum of quandlDataset.data) {
+            this.candleStickData.x.push(datum[0]);
+            this.candleStickData.close.push(datum[4]);
+            this.candleStickData.open.push(datum[1]);
+            this.candleStickData.high.push(datum[2]);
+            this.candleStickData.low.push(datum[3]);
+          }
+
+          this.graph.data = [this.candleStickData];
+
+          this.loadedValues.emit(true);
+        });
+      } else {
+        this.loadedValues.emit(true);
+      }
     });
   }
 
