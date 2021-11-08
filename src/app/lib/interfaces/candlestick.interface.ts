@@ -10,10 +10,11 @@ export interface CandleStickData {
   type: 'candlestick';
   xaxis: 'x';
   yaxis: 'y';
+  name: string
 }
 
 export interface CandleStickGraph {
-  data: CandleStickData[];
+  data: any[];
   layout: {
     autsize: boolean;
     title: string;

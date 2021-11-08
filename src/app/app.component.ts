@@ -15,7 +15,8 @@ export class AppComponent implements OnInit {
   showSpinner: boolean = false;
   searchForm = new FormGroup({
     company: new FormControl(),
-    startDate: new FormControl(''),
+    startDate: new FormControl(new Date(), []),
+    endDate: new FormControl(new Date(), []),
   });
 
   options: any = [];
@@ -25,6 +26,12 @@ export class AppComponent implements OnInit {
   constructor(private httpClient: HttpClient) {}
 
   ngOnInit() {
+    let startDate = new Date();
+    startDate.setFullYear(2012);
+    startDate.setMonth(0);
+
+    this.searchForm.controls['startDate']?.patchValue(startDate);
+
     this.showSpinner = true;
     this.httpClient
       .get('assets/companies.json', {})
@@ -41,12 +48,11 @@ export class AppComponent implements OnInit {
       });
   }
 
-  viewData(event: any, option?: any) {
+  viewData(event?: any, option?: any) {
     this.showSpinner = true;
-    this.searchForm.get('company')?.setValue(option.dataset_code);
-    this.selectedTicker.next(option.dataset_code);
+    // this.searchForm.get('company')?.setValue(option.dataset_code);
+    this.selectedTicker.next('reload');
   }
-
 
   private _filter(value: string): string[] {
     if (value == null || value == undefined) return this.options;
@@ -60,8 +66,6 @@ export class AppComponent implements OnInit {
   }
 
   finishedLoading(event?: any) {
-    if (this.showSpinner) {
-      this.showSpinner = false;
-    }
+    this.showSpinner = event;
   }
 }

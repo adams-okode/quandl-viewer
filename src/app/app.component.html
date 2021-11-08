@@ -1,7 +1,7 @@
 <div class="single-view-port">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <form class="d-flex" [formGroup]="searchForm">
+      <form class="d-flex" [formGroup]="searchForm" (ngSubmit)="viewData()">
         <mat-form-field class="custom-import" appearance="fill">
           <mat-label> -- Select Company -- </mat-label>
           <input
@@ -16,23 +16,53 @@
             <mat-option
               *ngFor="let option of filteredOptions | async"
               [value]="option.dataset_code"
-              (onSelectionChange)="viewData($event, option)"
-              (click)="viewData($event, option)"
             >
               {{ option.name }}
             </mat-option>
           </mat-autocomplete>
-  
-         
         </mat-form-field>
+
+        <mat-form-field class="mx-2" appearance="fill">
+          <mat-label>Filter From</mat-label>
+          <!-- #docregion toggle -->
+          <input
+            matInput
+            formControlName="startDate"
+            [matDatepicker]="dateFromPicker"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="dateFromPicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #dateFromPicker></mat-datepicker>
+          <!-- #enddocregion toggle -->
+        </mat-form-field>
+
+        <mat-form-field class="mx-2" appearance="fill">
+          <mat-label>Filter To</mat-label>
+          <!-- #docregion toggle -->
+          <input
+            matInput
+            formControlName="endDate"
+            [matDatepicker]="dateToPicker"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="dateToPicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #dateToPicker></mat-datepicker>
+          <!-- #enddocregion toggle -->
+        </mat-form-field>
+
+        <button type="submit" mat-flat-button color="primary">Filter</button>
       </form>
-  
+
       <div *ngIf="showSpinner" class="text-center mx-4">
         <div class="spinner-border" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
-      
+
       <button
         class="navbar-toggler"
         type="button"
@@ -50,9 +80,13 @@
       </div>
     </div>
   </nav>
-  
-  <br/>
-  <app-chart [ticker]="selectedTicker" (loadedValues)="finishedLoading($event)" ></app-chart>
+
+  <br />
+  <app-chart
+    [ticker]="selectedTicker"
+    [searchForm]="searchForm"
+    (showSpinner)="finishedLoading($event)"
+  ></app-chart>
 </div>
 
 <!-- <router-outlet></router-outlet> -->
