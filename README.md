@@ -6,7 +6,7 @@ this is an angular App
 
 - `npm i `
 
-- `npm run ng sere`
+- `npm run ng serve`
 # Time Break Down
 ## Main task
 |  TASK                                                                                                                                             | TIME SPENT |  TIME DONE   |
