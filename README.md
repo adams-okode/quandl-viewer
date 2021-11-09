@@ -1,6 +1,12 @@
 # QuandlViewer
-https://github.com/plotly/angular-plotly.js/blob/master/README.md
 
+## How to run 
+this is angular App
+- `git clone`
+
+- `npm i `
+
+- `npm run ng sere`
 # Time Break Down
 ## Main task
 |  TASK                                                                                                                                             | TIME SPENT |  TIME DONE   |
