@@ -1,7 +1,7 @@
 # QuandlViewer
 
 ## How to run 
-this is angular App
+this is an angular App
 - `git clone`
 
 - `npm i `
